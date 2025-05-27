@@ -1,5 +1,5 @@
 -- Installer for the Enchanted Book Store system
-local repo = "https://example.com/book-store/" -- adjust to your repository URL
+local repo = "https://raw.githubusercontent.com/Technikhighknee/cc-book-store/refs/heads/main/book-store/" -- adjust to your repository URL
 
 local files = {
     "core/utils.lua",
