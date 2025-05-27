@@ -18,7 +18,7 @@ for _, req in ipairs(requests) do
     local entry = db[key]
     if entry and entry.count > 0 then
         utils.print_colored(req.name .. " " .. req.level .. " Available", colors.green)
-        table.insert(slots, entry.slots[1])
+        table.insert(slots, {slot = entry.slots[1], key = key})
     else
         utils.print_colored(req.name .. " " .. req.level .. " Missing", colors.red)
     end
@@ -27,6 +27,19 @@ end
 if #slots > 0 then
     print("Recommended slots:")
     for _, s in ipairs(slots) do
-        print("  " .. s.inv .. " [" .. s.slot .. "]")
+        print("  " .. s.slot.inv .. " [" .. s.slot.slot .. "]")
+    end
+
+    local confirm = utils.input_prompt("Withdraw available books? [y/N]")
+    if confirm:lower():find("y") then
+        for _, s in ipairs(slots) do
+            local ok, err = utils.withdraw_book(s.slot)
+            if ok then
+                utils.remove_slot_from_db(db, s.key, s.slot)
+            else
+                print(err)
+            end
+        end
+        utils.save_db(db)
     end
 end

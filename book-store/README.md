@@ -14,12 +14,13 @@ Start the initial indexing with:
 ```lua
 shell.run("book-store/apps/index.lua")
 ```
+You can re-run the indexer later from within the UI.
 
 ## Applications
 - **index.lua**: scans all connected inventories and builds the database.
 - **search.lua**: search the database for enchantments.
-- **builder.lua**: check whether a list of enchantments is available.
-- **store.lua**: move a book to an output chest.
+- **builder.lua**: check whether a list of enchantments is available and optionally withdraw them.
+- **store.lua**: move a book to an output chest and update the database.
 
 The database is stored in `book-store/data/db.txt` and can be edited or deleted as needed.
 

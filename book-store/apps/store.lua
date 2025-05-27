@@ -24,7 +24,9 @@ end
 local slot = entry.slots[1]
 local ok, err = utils.withdraw_book(slot)
 if ok then
-    print("Book moved. Please update the database")
+    utils.remove_slot_from_db(db, key, slot)
+    utils.save_db(db)
+    print("Book moved")
 else
     print(err)
 end

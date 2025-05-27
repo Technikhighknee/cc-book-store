@@ -121,4 +121,23 @@ function utils.input_prompt(msg)
     return read()
 end
 
+--- Remove a withdrawn book slot from the database
+-- @param db table database table
+-- @param key string enchantment key name:level
+-- @param slot table slot information {inv=string, slot=number}
+function utils.remove_slot_from_db(db, key, slot)
+    local entry = db[key]
+    if not entry then return end
+    for i, s in ipairs(entry.slots) do
+        if s.inv == slot.inv and s.slot == slot.slot then
+            entry.count = entry.count - 1
+            table.remove(entry.slots, i)
+            if entry.count <= 0 or #entry.slots == 0 then
+                db[key] = nil
+            end
+            break
+        end
+    end
+end
+
 return utils

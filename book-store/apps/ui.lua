@@ -11,8 +11,10 @@ if mon then
 end
 
 local function withdraw_book(slot)
-  local ok, err = utils.withdraw_book(slot)
+  local ok, err = utils.withdraw_book(slot.slot)
   if ok then
+    utils.remove_slot_from_db(db, slot.key, slot.slot)
+    utils.save_db(db)
     print("Moved to output chest")
   else
     print(err)
@@ -31,7 +33,7 @@ local function display_table(rows, headers, line_map)
   for _, r in ipairs(rows) do
     local loc = r.loc or ""
     print(string.format("%-16s %-5s %-6s %s", r.name, r.level, r.extra, loc))
-    if line_map and r.slot then line_map[y] = r.slot end
+    if line_map and r.slot and r.key then line_map[y] = {slot=r.slot, key=r.key} end
     y = y + 1
   end
   return y
@@ -70,7 +72,8 @@ local function search_ui()
           level = eLvl,
           extra = data.count,
           loc = data.slots[1].inv .. "[" .. data.slots[1].slot .. "]",
-          slot = data.slots[1]
+          slot = data.slots[1],
+          key = key
         })
       end
     end
@@ -105,7 +108,8 @@ local function build_ui()
         level = req.level,
         extra = "ok",
         loc = entry.slots[1].inv .. "[" .. entry.slots[1].slot .. "]",
-        slot = entry.slots[1]
+        slot = entry.slots[1],
+        key = key
       })
     else
       table.insert(rows, {name=req.name, level=req.level, extra="missing"})
@@ -118,6 +122,16 @@ local function build_ui()
   wait_for_click(map)
 end
 
+local function index_ui()
+  term.clear()
+  term.setCursorPos(1,1)
+  print("Indexing inventories...")
+  shell.run(fs.combine(fs.getDir(shell.getRunningProgram()), "index.lua"))
+  db = utils.load_db()
+  print("Done. Press any key")
+  os.pullEvent("key")
+end
+
 local function menu()
   while true do
     term.clear()
@@ -125,15 +139,17 @@ local function menu()
     print("Enchanted Book Store")
     print("1) Search books")
     print("2) Build books")
-    print("3) Exit")
-    local line_choice = { [2] = search_ui, [3] = build_ui, [4] = function() return true end }
+    print("3) Update index")
+    print("4) Exit")
+    local line_choice = { [2] = search_ui, [3] = build_ui, [4] = index_ui, [5] = function() return true end }
     local choice
     while not choice do
       local e, p1, x, y = os.pullEvent()
       if e == "char" then
         if p1 == "1" then choice = search_ui
         elseif p1 == "2" then choice = build_ui
-        elseif p1 == "3" then return end
+        elseif p1 == "3" then choice = index_ui
+        elseif p1 == "4" then return end
       elseif e == "mouse_click" and line_choice[y] then
         choice = line_choice[y]
         if choice == true then return end
