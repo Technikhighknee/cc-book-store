@@ -84,6 +84,35 @@ function utils.table_length(t)
     return n
 end
 
+--- Parse a comma separated list of enchantments
+-- @param input string list like "unbreaking 3, mending 1"
+-- @return table list of {name=string, level=number}
+function utils.parse_enchant_list(input)
+    local reqs = {}
+    if not input then return reqs end
+    for token in string.gmatch(input, "[^,]+") do
+        local name, lvl = token:match("%s*(%S+)%s*(%d*)")
+        lvl = tonumber(lvl) or 1
+        if name then table.insert(reqs, {name = name, level = lvl}) end
+    end
+    return reqs
+end
+
+--- Move a book from a given slot to the first matching chest
+-- @param slot table {inv=string, slot=number}
+-- @param pattern string? peripheral search pattern (default "chest")
+-- @return boolean, string? success flag and error message
+function utils.withdraw_book(slot, pattern)
+    local out, outName = utils.find_peripheral(pattern or "chest")
+    if not out then return false, "Output chest not found" end
+    local inv = peripheral.wrap(slot.inv)
+    if inv and inv.pushItems then
+        inv.pushItems(outName, slot.slot, 1)
+        return true
+    end
+    return false, "Unable to move item"
+end
+
 --- Prompt the user and return the entered string
 -- @param msg string prompt message
 -- @return string user input

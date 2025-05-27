@@ -12,26 +12,19 @@ end
 local request = utils.input_prompt("Which enchantment to retrieve (e.g. unbreaking 3):")
 if not request or request == "" then return end
 
-local name, lvl = request:match("%s*(%S+)%s*(%d*)")
-lvl = tonumber(lvl) or 1
-local key = name .. ":" .. tostring(lvl)
+local parsed = utils.parse_enchant_list(request)[1]
+if not parsed then return end
+local key = parsed.name .. ":" .. tostring(parsed.level)
 local entry = db[key]
 if not entry or #entry.slots == 0 then
     print("Not available")
     return
 end
 
-local out, outName = utils.find_peripheral("chest")
-if not out then
-    print("Output chest not found")
-    return
-end
-
 local slot = entry.slots[1]
-local inv = peripheral.wrap(slot.inv)
-if inv and inv.pushItems then
-    inv.pushItems(outName, slot.slot, 1)
+local ok, err = utils.withdraw_book(slot)
+if ok then
     print("Book moved. Please update the database")
 else
-    print("Could not move the book")
+    print(err)
 end

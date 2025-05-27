@@ -11,32 +11,15 @@ if mon then
 end
 
 local function withdraw_book(slot)
-  local out, outName = utils.find_peripheral("chest")
-  if not out then
-    print("Output chest not found")
-    sleep(1)
-    return
-  end
-  local inv = peripheral.wrap(slot.inv)
-  if inv and inv.pushItems then
-    inv.pushItems(outName, slot.slot, 1)
+  local ok, err = utils.withdraw_book(slot)
+  if ok then
     print("Moved to output chest")
-    sleep(1)
   else
-    print("Could not move the book")
-    sleep(1)
+    print(err)
   end
+  sleep(1)
 end
 
-local function parse_requests(input)
-  local reqs = {}
-  for token in string.gmatch(input, "[^,]+") do
-    local name, lvl = token:match("%s*(%S+)%s*(%d*)")
-    lvl = tonumber(lvl) or 1
-    if name then table.insert(reqs, {name = name, level = lvl}) end
-  end
-  return reqs
-end
 
 local function display_table(rows, headers, line_map)
   term.clear()
@@ -111,7 +94,7 @@ local function build_ui()
   local input = read()
   if not input or input == "" then return end
 
-  local requests = parse_requests(input)
+  local requests = utils.parse_enchant_list(input)
   local rows = {}
   for _, req in ipairs(requests) do
     local key = req.name .. ":" .. tostring(req.level)
