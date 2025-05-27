@@ -1,5 +1,3 @@
--- Check whether a set of enchantments is available in the database
-
 local utils = require("book-store.core.utils")
 local db = utils.load_db()
 
@@ -16,6 +14,7 @@ for token in string.gmatch(input, "[^,]+") do
     local name, lvl = token:match("%s*(%S+)%s*(%d*)")
     lvl = tonumber(lvl) or 1
     if name then table.insert(requests, {name = name, level = lvl}) end
+
 end
 
 local slots = {}

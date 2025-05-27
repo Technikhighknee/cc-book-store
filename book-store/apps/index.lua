@@ -1,3 +1,4 @@
+
 -- Index all enchanted books from attached inventories and build the database
 
 local utils = require("book-store.core.utils")
