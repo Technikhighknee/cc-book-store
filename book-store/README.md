@@ -22,3 +22,7 @@ shell.run("book-store/apps/index.lua")
 - **store.lua**: move a book to an output chest.
 
 The database is stored in `book-store/data/db.txt` and can be edited or deleted as needed.
+
+## Graphical Interface
+
+A unified UI is available in `apps/ui.lua`. Place `startup.lua` in the computer's root to automatically launch the interface on boot. If a monitor is connected the interface will use it for output. The UI allows searching the database and requesting books with mouse clicks as well as checking availability for building enchanted books.

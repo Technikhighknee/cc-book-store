@@ -44,6 +44,7 @@ local files = {
     "apps/search.lua",
     "apps/builder.lua",
     "apps/store.lua",
+    "apps/ui.lua",
 }
 
 for _, file in ipairs(files) do
@@ -57,5 +58,10 @@ for _, file in ipairs(files) do
         print("Failed to download " .. url)
     end
 end
+
+-- fetch startup script to run the UI on boot
+local startup_url = repo .. "../startup.lua"
+print("Downloading " .. startup_url .. " -> startup.lua")
+shell.run("wget", startup_url, "startup.lua")
 
 print("Book Store installed. Start with: shell.run('book-store/apps/index.lua')")
