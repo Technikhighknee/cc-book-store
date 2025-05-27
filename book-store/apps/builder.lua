@@ -10,13 +10,7 @@ end
 local input = utils.input_prompt("Desired enchants (e.g. unbreaking 3, mending 1):")
 if not input or input == "" then return end
 
-local requests = {}
-for token in string.gmatch(input, "[^,]+") do
-    local name, lvl = token:match("%s*(%S+)%s*(%d*)")
-    lvl = tonumber(lvl) or 1
-    if name then table.insert(requests, {name = name, level = lvl}) end
-
-end
+local requests = utils.parse_enchant_list(input)
 
 local slots = {}
 for _, req in ipairs(requests) do

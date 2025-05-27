@@ -10,23 +10,30 @@ if #inventories == 0 then
     return
 end
 
-local db = {}
+local function add_book(db, name, level, inv_name, slot, count)
+    local key = name .. ":" .. tostring(level)
+    local entry = db[key] or {count = 0, slots = {}}
+    entry.count = entry.count + count
+    table.insert(entry.slots, {inv = inv_name, slot = slot, count = count})
+    db[key] = entry
+end
 
-for _, entry in ipairs(inventories) do
-    local inv, name = entry[1], entry[2]
+local function scan_inventory(inv, name, db)
     local size = utils.get_inventory_size(inv)
     for slot = 1, size do
         local detail = inv.getItemDetail(slot)
         local enchantments = detail and detail.enchantments
         if enchantments then
             for _, ench in ipairs(enchantments) do
-                local key = ench.name .. ":" .. tostring(ench.level)
-                db[key] = db[key] or {count = 0, slots = {}}
-                db[key].count = db[key].count + (detail.count or 1)
-                table.insert(db[key].slots, {inv = name, slot = slot, count = detail.count})
+                add_book(db, ench.name, ench.level, name, slot, detail.count or 1)
             end
         end
     end
+end
+
+local db = {}
+for _, entry in ipairs(inventories) do
+    scan_inventory(entry[1], entry[2], db)
 end
 
 utils.save_db(db)
