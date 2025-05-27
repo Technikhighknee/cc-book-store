@@ -1,7 +1,8 @@
 
 -- Index all enchanted books from attached inventories and build the database
 
-local utils = require("book-store.core.utils")
+-- load utils relative to this script to avoid require path issues
+local utils = dofile(fs.combine(fs.getDir(shell.getRunningProgram()), "../core/utils.lua"))
 
 local inventories = utils.find_inventories()
 if #inventories == 0 then
