@@ -10,7 +10,8 @@ It can index inventories, search for enchantments and move books to an output ch
    for updates each time it runs and will automatically refresh itself if a new
    version is available.
 
-Start the initial indexing with:
+If no database is present, the `startup.lua` script will index your inventories
+automatically. You can also run the indexer manually:
 ```lua
 shell.run("book-store/apps/index.lua")
 ```
