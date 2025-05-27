@@ -6,7 +6,9 @@ It can index inventories, search for enchantments and move books to an output ch
 ## Installation
 
 1. Copy the `book-store` folder to your ComputerCraft computer.
-2. Alternatively run `install.lua` (edit the repository URL first) to download all files.
+2. Alternatively run `install.lua` to download all files. The installer checks
+   for updates each time it runs and will automatically refresh itself if a new
+   version is available.
 
 Start the initial indexing with:
 ```lua
