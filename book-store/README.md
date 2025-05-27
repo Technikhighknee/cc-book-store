@@ -1,21 +1,22 @@
 # Enchanted Book Store
 
-Dieses System erm\195\182glicht das automatische Indexieren und Ausgeben von verzauberten B\195\188chern in ComputerCraft.
+This system automates the handling of enchanted books with ComputerCraft.
+It can index inventories, search for enchantments and move books to an output chest.
 
 ## Installation
 
-1. Kopiere den Ordner `book-store` auf deinen ComputerCraft-Computer.
-2. Alternativ kann `install.lua` genutzt werden, um die Dateien per `wget` zu laden (URL in der Datei anpassen).
+1. Copy the `book-store` folder to your ComputerCraft computer.
+2. Alternatively run `install.lua` (edit the repository URL first) to download all files.
 
-Start der Indexierung:
-```
+Start the initial indexing with:
+```lua
 shell.run("book-store/apps/index.lua")
 ```
 
-## Anwendungen
-- **index.lua**: scannt alle angeschlossenen Inventare und baut die Datenbank auf.
-- **search.lua**: Suche nach Enchantments in der Datenbank.
-- **builder.lua**: Pr\195\188ft, ob eine Liste von Enchantments vorhanden ist.
-- **store.lua**: Gibt ein Buch in eine Ausgabekiste aus.
+## Applications
+- **index.lua**: scans all connected inventories and builds the database.
+- **search.lua**: search the database for enchantments.
+- **builder.lua**: check whether a list of enchantments is available.
+- **store.lua**: move a book to an output chest.
 
-Die Datenbank befindet sich in `book-store/data/db.txt` und kann manuell bearbeitet oder gel\195\182scht werden.
+The database is stored in `book-store/data/db.txt` and can be edited or deleted as needed.
