@@ -1,0 +1,3 @@
+- Fixed UI exit when clicking Exit option
+- Startup now indexes only if database empty
+- Documented automated indexing in README

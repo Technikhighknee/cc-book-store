@@ -126,7 +126,7 @@ local function menu()
     print("1) Search books")
     print("2) Build books")
     print("3) Exit")
-    local line_choice = { [2] = search_ui, [3] = build_ui, [4] = function() return true end }
+  local line_choice = { [2] = search_ui, [3] = build_ui, [4] = true }
     local choice
     while not choice do
       local e, p1, x, y = os.pullEvent()
@@ -135,8 +135,11 @@ local function menu()
         elseif p1 == "2" then choice = build_ui
         elseif p1 == "3" then return end
       elseif e == "mouse_click" and line_choice[y] then
-        choice = line_choice[y]
-        if choice == true then return end
+        if line_choice[y] == true then
+          return
+        else
+          choice = line_choice[y]
+        end
       end
     end
     if choice then choice() end
