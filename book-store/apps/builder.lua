@@ -23,10 +23,10 @@ for _, req in ipairs(requests) do
     local key = req.name .. ":" .. tostring(req.level)
     local entry = db[key]
     if entry and entry.count > 0 then
-        utils.print_colored(req.name .. " " .. req.level .. " \226\156\150 Available", colors.green)
+        utils.print_colored(req.name .. " " .. req.level .. " Available", colors.green)
         table.insert(slots, entry.slots[1])
     else
-        utils.print_colored(req.name .. " " .. req.level .. " \226\156\168 Missing", colors.red)
+        utils.print_colored(req.name .. " " .. req.level .. " Missing", colors.red)
     end
 end
 
